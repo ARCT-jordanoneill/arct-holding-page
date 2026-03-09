@@ -86,7 +86,7 @@
       padding:.55rem 1.4rem; border-radius:2px;
       font-family:'Rajdhani',sans-serif; font-size:.8rem; font-weight:600;
       letter-spacing:.25em; text-transform:uppercase;
-      color:var(--white-dim); margin-bottom:3rem;
+      color:var(--white-dim); margin-bottom:2rem;
       opacity:0; animation:fadeUp 1s ease forwards 1.3s;
     }
 
@@ -100,6 +100,7 @@
     .contact {
       font-size:.78rem; letter-spacing:.12em;
       color:var(--white-dim); text-transform:uppercase;
+      margin-bottom:1.5rem;
       opacity:0; animation:fadeUp 1s ease forwards 1.5s;
     }
     .contact a {
@@ -108,6 +109,24 @@
       transition:color .3s,border-color .3s;
     }
     .contact a:hover { color:var(--white); border-color:var(--blue-light); }
+
+    /* LinkedIn link */
+    .linkedin {
+      opacity:0; animation:fadeUp 1s ease forwards 1.7s;
+    }
+    .linkedin a {
+      display:inline-flex; align-items:center; gap:.5rem;
+      font-size:.75rem; letter-spacing:.12em; text-transform:uppercase;
+      color:var(--white-dim); text-decoration:none;
+      border:1px solid rgba(0,82,204,.25); background:rgba(0,82,204,.05);
+      padding:.4rem 1rem; border-radius:2px;
+      transition:color .3s, border-color .3s, background .3s;
+    }
+    .linkedin a:hover {
+      color:var(--white); border-color:var(--blue-light);
+      background:rgba(0,82,204,.12);
+    }
+    .linkedin svg { width:14px; height:14px; fill:currentColor; flex-shrink:0; }
 
     .corner { position:fixed; width:20px; height:20px; opacity:.3; z-index:3; }
     .corner--tl { top:16px; left:16px; border-top:1px solid var(--blue); border-left:1px solid var(--blue); }
@@ -144,7 +163,8 @@
 
 <main class="page">
   <div class="logo-wrap">
-    <img src="Logo_1.jpg" alt="ARC Technologies" />
+    <img src="Logo_1.jpg" alt="ARC Technologies" onerror="this.style.display='none';document.getElementById('logo-text').style.display='block'" />
+    <div id="logo-text" style="display:none;font-family:'Rajdhani',sans-serif;font-size:2.2rem;font-weight:700;letter-spacing:.2em;color:#fff;">ARC <span style="color:#1a6fff;">TECHNOLOGIES</span></div>
   </div>
   <div class="divider"></div>
   <p class="tagline">Defence Technology<span>.</span> Redefined<span>.</span></p>
@@ -157,6 +177,14 @@
     Enquiries &nbsp;&mdash;&nbsp;
     <a href="mailto:jordan.oneill@arc-technologies.co.uk">jordan.oneill@arc-technologies.co.uk</a>
   </p>
+  <div class="linkedin">
+    <a href="https://www.linkedin.com/company/arc-t/" target="_blank" rel="noopener">
+      <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+        <path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433a2.062 2.062 0 0 1-2.063-2.065 2.064 2.064 0 1 1 2.063 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/>
+      </svg>
+      Follow on LinkedIn
+    </a>
+  </div>
 </main>
 
 <div class="founded">
@@ -197,14 +225,12 @@
   function draw() {
     ctx.clearRect(0,0,W,H);
 
-    // Moving grid
     const offsetY = (Date.now()*.00006*20) % 60;
     ctx.strokeStyle = 'rgba(0,82,204,0.045)';
     ctx.lineWidth   = 0.5;
     for (let x=0; x<W+60; x+=60) { ctx.beginPath(); ctx.moveTo(x,0); ctx.lineTo(x,H); ctx.stroke(); }
     for (let y=-60+offsetY; y<H+60; y+=60) { ctx.beginPath(); ctx.moveTo(0,y); ctx.lineTo(W,y); ctx.stroke(); }
 
-    // Nodes
     nodes.forEach(n => {
       n.x += n.vx; n.y += n.vy; n.pulse += .02;
       if (n.x<0||n.x>W) n.vx*=-1;
@@ -214,7 +240,6 @@
       ctx.fillStyle = BLUE_LIGHT+a+')'; ctx.fill();
     });
 
-    // Connecting lines
     for (let i=0;i<nodes.length;i++) {
       for (let j=i+1;j<nodes.length;j++) {
         const a=nodes[i], b=nodes[j];
@@ -227,7 +252,6 @@
       }
     }
 
-    // Occasional bright data pulse
     if (Math.random()<.008) {
       const a=nodes[Math.floor(Math.random()*nodes.length)];
       const b=nodes[Math.floor(Math.random()*nodes.length)];
